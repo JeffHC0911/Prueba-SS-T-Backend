@@ -5,3 +5,27 @@ terraform.tfvars
 crash.log
 *.log
 *.tfplan
+
+#Ignore Node.js dependencies
+node_modules/
+package-lock.json
+
+# Ignore Python virtual environments
+venv/
+.env
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.swp
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore build artifacts
+dist/
+build/
+
+#Ignore .zip files
+*.zip

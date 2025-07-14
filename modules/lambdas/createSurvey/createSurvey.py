@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+import uuid
 from botocore.exceptions import ClientError
 from datetime import datetime
 
@@ -11,13 +12,15 @@ table = dynamodb.Table(table_name)
 def lambda_handler(event, context):
     try:
         body = json.loads(event.get('body', '{}'))
-        survey_id = body.get('survey_id')
+        
+        # Generar survey_id si no viene en el body
+        survey_id = body.get('survey_id') or f"survey-{uuid.uuid4().hex[:8]}"
+        
         title = body.get('title')
-
-        if not survey_id or not title:
+        if not title:
             return {
                 'statusCode': 400,
-                'body': json.dumps({'message': 'survey_id and title are required'})
+                'body': json.dumps({'message': 'title is required'})
             }
 
         item = {
@@ -31,7 +34,6 @@ def lambda_handler(event, context):
             'updated_at': datetime.utcnow().isoformat()
         }
 
-        # Conditionally insert to avoid overwriting existing survey_id
         table.put_item(
             Item=item,
             ConditionExpression='attribute_not_exists(survey_id)'

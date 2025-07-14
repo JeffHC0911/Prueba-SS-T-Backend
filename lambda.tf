@@ -68,4 +68,26 @@ module "get_survey_by_id_lambda" {
   ]
 }
 
+module "delete_survey_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "deleteSurvey"
+  handler       = "deleteSurvey.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/deleteSurvey/deleteSurvey.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+  dynamodb_actions = [
+    "dynamodb:DeleteItem"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
+
 

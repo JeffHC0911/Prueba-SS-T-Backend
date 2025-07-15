@@ -29,3 +29,6 @@ build/
 
 #Ignore .zip files
 *.zip
+
+#Ignore testing-local files
+testing-local/

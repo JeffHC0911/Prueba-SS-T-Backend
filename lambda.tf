@@ -50,7 +50,7 @@ module "get_survey_by_id_lambda" {
   source = "./modules/lambda"
 
   function_name = "getSurveyById"
-  handler       = "getSurvey.lambda_handler"
+  handler       = "getSurveyById.lambda_handler"
   runtime       = "python3.11"
   filename      = "modules/lambdas/getSurveyById/getSurveyById.zip"
 

@@ -142,5 +142,28 @@ module "create_questions_lambda" {
   ]
 }
 
+module "get_questions_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "getQuestions"
+  handler       = "getQuestions.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/getQuestions/getQuestions.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+  dynamodb_actions = [
+    "dynamodb:GetItem",
+    "dynamodb:Scan",
+    "dynamodb:Query"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
 
 

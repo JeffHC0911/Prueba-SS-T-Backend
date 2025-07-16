@@ -165,5 +165,31 @@ module "get_questions_lambda" {
   ]
 }
 
+module "create_responses_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "createResponses"
+  handler       = "createResponses.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/createResponses/createResponses.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+    dynamodb_actions = [
+    "dynamodb:PutItem",
+    "dynamodb:GetItem",
+    "dynamodb:UpdateItem",
+    "dynamodb:DeleteItem",
+    "dynamodb:Query",
+    "dynamodb:Scan"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
 
 

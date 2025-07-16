@@ -89,5 +89,58 @@ module "delete_survey_lambda" {
   ]
 }
 
+module "create_survey_version_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "createSurveyVersion"
+  handler       = "createSurveyVersion.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/createSurveyVersion/createSurveyVersion.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+    dynamodb_actions = [
+    "dynamodb:PutItem",
+    "dynamodb:GetItem",
+    "dynamodb:UpdateItem",
+    "dynamodb:DeleteItem",
+    "dynamodb:Query",
+    "dynamodb:Scan"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
+
+module "create_questions_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "createQuestions"
+  handler       = "createQuestions.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/createQuestions/createQuestions.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+    dynamodb_actions = [
+    "dynamodb:PutItem",
+    "dynamodb:GetItem",
+    "dynamodb:UpdateItem",
+    "dynamodb:DeleteItem",
+    "dynamodb:Query",
+    "dynamodb:Scan"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
 
 

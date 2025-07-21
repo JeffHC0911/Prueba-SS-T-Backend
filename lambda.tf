@@ -191,5 +191,28 @@ module "create_responses_lambda" {
   ]
 }
 
+module "get_responses_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "getResponses"
+  handler       = "getResponses.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/getResponses/getResponses.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+  dynamodb_actions = [
+    "dynamodb:GetItem",
+    "dynamodb:Scan",
+    "dynamodb:Query"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
 
 

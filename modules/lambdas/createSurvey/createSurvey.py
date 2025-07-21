@@ -40,9 +40,15 @@ def lambda_handler(event, context):
         title = body.get('title')
         if not title:
             return {
-                'statusCode': 400,
-                'body': json.dumps({'message': 'title is required'})
-            }
+            'statusCode': 400,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({'message': 'title is required'}),
+            'isBase64Encoded': False
+}
+
 
         now = datetime.utcnow().isoformat()
 
@@ -71,9 +77,18 @@ def lambda_handler(event, context):
         )
 
         return {
-            'statusCode': 201,
-            'body': json.dumps(item)
-        }
+            'statusCode': 200,
+            'headers': { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            'body': json.dumps({
+                'message': 'Encuesta creada correctamente',
+                'survey_id': survey_id,
+                'item': item
+            }),
+            'isBase64Encoded': False
+}
+
+
+
 
     except ClientError as e:
         logger.error(f"ClientError: {e}")

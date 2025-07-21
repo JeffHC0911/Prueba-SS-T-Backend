@@ -48,6 +48,7 @@ def lambda_handler(event, context):
             'text': body.get('text', ''),
             'type': body.get('type', 'text'),  # ejemplo: text, choice, multiple-choice
             'options': body.get('options', []), # para preguntas con opciones tipo choice
+            'required': body.get('required', False),
             'created_at': now,
             'updated_at': now
         }

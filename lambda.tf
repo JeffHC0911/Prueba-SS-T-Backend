@@ -214,5 +214,51 @@ module "get_responses_lambda" {
   ]
 }
 
+module "update_survey_status_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "updateSurvey"
+  handler       = "updateSurvey.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/updateSurvey/updateSurvey.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+  dynamodb_actions = [
+    "dynamodb:UpdateItem",
+    "dynamodb:GetItem"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
+module "get_survey_details_lambda" {
+  source = "./modules/lambda"
+
+  function_name = "getSurveyDetails"
+  handler       = "getSurveyDetails.lambda_handler"
+  runtime       = "python3.11"
+  filename      = "modules/lambdas/getSurveyDetails/getSurveyDetails.zip"
+
+  environment_variables = {
+    SURVEYS_TABLE_NAME = module.dynamodb.surveys_table_name
+  }
+
+  dynamodb_actions = [
+    "dynamodb:GetItem",
+    "dynamodb:Scan",
+    "dynamodb:Query"
+  ]
+
+  dynamodb_resources = [
+    module.dynamodb.surveys_table_arn
+  ]
+}
+
+
 
 
